@@ -4,4 +4,5 @@ plotly==5.3.1
 matplotlib==3.4.3
 scikit-learn==0.24.2
 graphviz==0.17
-openpyxl==3.0.9
+openpyxl>=3.0.10
+
