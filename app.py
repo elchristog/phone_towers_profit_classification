@@ -63,7 +63,7 @@ with st.sidebar:
     # Create a menu
     st.image("cell-tower.png", width=100, use_column_width=False)
     menu = st.sidebar.radio("Menu", ["Home", "Proyectos NO rentables", "Proyectos rentables", "Oportunidades"])
-    st.divider()
+    st.write("---") 
 # Display the selected page
 if menu == "Home":
     # Set the title of the app
@@ -99,7 +99,7 @@ if menu == "Home":
     st.plotly_chart(fig)
 
     
-    st.divider()
+    st.write("---") 
 
 
 
@@ -157,7 +157,7 @@ elif menu == "Proyectos NO rentables":
     ]
 
 
-    st.divider()
+    st.write("---") 
     # Count the number of projects in the filtered dataframe
     num_projects = len(filtered_merged)
 
@@ -177,7 +177,7 @@ elif menu == "Proyectos NO rentables":
         st.markdown(f'**Total outcome:** {locale.currency(total_outcome, grouping=True)}')
 
 
-    st.divider()
+    st.write("---") 
 
     # Create a slider to select the number of rows to display in the table
     num_rows_to_display = st.slider('Selecciona el top de proyectos con mayor costo:', min_value=1, max_value=len(filtered_merged), value=3)
@@ -186,7 +186,7 @@ elif menu == "Proyectos NO rentables":
     st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'cash_flow']].sort_values(by=['cash_flow'], ascending=True).head(num_rows_to_display))
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por estado y sumar los flujos de efectivo para cada estado, usando valores absolutos
     state_cashflow_abs = filtered_merged.groupby("state")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
@@ -208,7 +208,7 @@ elif menu == "Proyectos NO rentables":
 
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por grupo de proyecto y sumar los flujos de efectivo para cada uno, usando valores absolutos
     proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
@@ -231,7 +231,7 @@ elif menu == "Proyectos NO rentables":
 
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por cliente y sumar los flujos de efectivo para cada uno, usando valores absolutos
     client_cashflow_abs = filtered_merged.groupby("client_name")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
@@ -292,7 +292,7 @@ elif menu == "Proyectos rentables":
     ]
 
 
-    st.divider()
+    st.write("---") 
     # Count the number of projects in the filtered dataframe
     num_projects = len(filtered_merged)
 
@@ -312,7 +312,7 @@ elif menu == "Proyectos rentables":
         st.markdown(f'**Total income:** {locale.currency(total_income, grouping=True)}')
 
 
-    st.divider()
+    st.write("---") 
 
     # Create a slider to select the number of rows to display in the table
     num_rows_to_display = st.slider('Selecciona el top de proyectos con mayor beneficio:', min_value=1, max_value=len(filtered_merged), value=3)
@@ -321,7 +321,7 @@ elif menu == "Proyectos rentables":
     st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'cash_flow']].sort_values(by=['cash_flow'], ascending=False).head(num_rows_to_display))
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por estado y sumar los flujos de efectivo para cada estado, usando valores absolutos
     state_cashflow_abs = filtered_merged.groupby("state")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
@@ -343,7 +343,7 @@ elif menu == "Proyectos rentables":
 
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por grupo de proyecto y sumar los flujos de efectivo para cada uno, usando valores absolutos
     proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
@@ -366,7 +366,7 @@ elif menu == "Proyectos rentables":
 
 
 
-    st.divider()
+    st.write("---") 
     # Agrupar los datos por cliente y sumar los flujos de efectivo para cada uno, usando valores absolutos
     client_cashflow_abs = filtered_merged.groupby("client_name")["cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
