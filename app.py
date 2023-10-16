@@ -172,7 +172,7 @@ elif menu == "Proyectos NO rentables":
     with col1:
         st.markdown(f'**Número de proyectos:** {num_projects}')
     with col2:
-        st.markdown(f'**Total cashflow:** {locale.currency(total_cashflow, grouping=True)}')
+        st.markdown(f'**Total project cashflow:** {locale.currency(total_cashflow, grouping=True)}')
     with col3:
         st.markdown(f'**Total outcome:** {locale.currency(total_outcome, grouping=True)}')
 
@@ -307,7 +307,7 @@ elif menu == "Proyectos rentables":
     with col1:
         st.markdown(f'**Número de proyectos:** {num_projects}')
     with col2:
-        st.markdown(f'**Total cashflow:** {locale.currency(total_cashflow, grouping=True)}')
+        st.markdown(f'**Total project cashflow:** {locale.currency(total_cashflow, grouping=True)}')
     with col3:
         st.markdown(f'**Total income:** {locale.currency(total_income, grouping=True)}')
 
