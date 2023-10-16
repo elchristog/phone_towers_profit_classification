@@ -52,7 +52,7 @@ cities = pd.read_csv('cities_completed.csv', decimal= ',')
 cities = cities[['city_code', 'latitude', 'longitude', 'population', 'area', 'state']]
 # Merge the two dataframes on the city_code column
 merged = pd.merge(projects, cities, on='city_code', how='left')
-merged['cash_flow'] = merged['total_income']-merged['total_outcome']
+merged['project_cash_flow'] = merged['total_income']-merged['total_outcome']
 
 
 st.set_page_config(page_title="Diferenciación de torres por rentabilidad", page_icon="📡", layout="centered", initial_sidebar_state="expanded")
@@ -162,7 +162,7 @@ elif menu == "Proyectos NO rentables":
     num_projects = len(filtered_merged)
 
     # Calculate the sum of cashflow for the filtered projects
-    total_cashflow = filtered_merged['cash_flow'].sum()
+    total_cashflow = filtered_merged['project_cash_flow'].sum()
 
     # Calculate the sum of outcome for the filtered projects
     total_outcome = -filtered_merged['total_outcome'].sum()
@@ -183,12 +183,12 @@ elif menu == "Proyectos NO rentables":
     num_rows_to_display = st.slider('Selecciona el top de proyectos con mayor costo:', min_value=1, max_value=len(filtered_merged), value=3)
 
     # Display the filtered dataframe, limited to the selected number of rows
-    st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'cash_flow']].sort_values(by=['cash_flow'], ascending=True).head(num_rows_to_display))
+    st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'project_cash_flow']].sort_values(by=['project_cash_flow'], ascending=True).head(num_rows_to_display))
 
 
     st.write("---") 
     # Agrupar los datos por estado y sumar los flujos de efectivo para cada estado, usando valores absolutos
-    state_cashflow_abs = filtered_merged.groupby("state")["cash_flow"].sum().abs()
+    state_cashflow_abs = filtered_merged.groupby("state")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     state_cashflow_abs = state_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -210,7 +210,7 @@ elif menu == "Proyectos NO rentables":
 
     st.write("---") 
     # Agrupar los datos por grupo de proyecto y sumar los flujos de efectivo para cada uno, usando valores absolutos
-    proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["cash_flow"].sum().abs()
+    proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     proj_group_cashflow_abs = proj_group_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -233,7 +233,7 @@ elif menu == "Proyectos NO rentables":
 
     st.write("---") 
     # Agrupar los datos por cliente y sumar los flujos de efectivo para cada uno, usando valores absolutos
-    client_cashflow_abs = filtered_merged.groupby("client_name")["cash_flow"].sum().abs()
+    client_cashflow_abs = filtered_merged.groupby("client_name")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     client_cashflow_abs = client_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -297,7 +297,7 @@ elif menu == "Proyectos rentables":
     num_projects = len(filtered_merged)
 
     # Calculate the sum of cashflow for the filtered projects
-    total_cashflow = filtered_merged['cash_flow'].sum()
+    total_cashflow = filtered_merged['project_cash_flow'].sum()
 
     # Calculate the sum of outcome for the filtered projects
     total_income = filtered_merged['total_income'].sum()
@@ -318,12 +318,12 @@ elif menu == "Proyectos rentables":
     num_rows_to_display = st.slider('Selecciona el top de proyectos con mayor beneficio:', min_value=1, max_value=len(filtered_merged), value=3)
 
     # Display the filtered dataframe, limited to the selected number of rows
-    st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'cash_flow']].sort_values(by=['cash_flow'], ascending=False).head(num_rows_to_display))
+    st.table(filtered_merged[['id', 'project_name', 'proj_group', 'project_creation_date', 'city_name', 'total_income', 'total_outcome', 'project_cash_flow']].sort_values(by=['project_cash_flow'], ascending=False).head(num_rows_to_display))
 
 
     st.write("---") 
     # Agrupar los datos por estado y sumar los flujos de efectivo para cada estado, usando valores absolutos
-    state_cashflow_abs = filtered_merged.groupby("state")["cash_flow"].sum().abs()
+    state_cashflow_abs = filtered_merged.groupby("state")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     state_cashflow_abs = state_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -345,7 +345,7 @@ elif menu == "Proyectos rentables":
 
     st.write("---") 
     # Agrupar los datos por grupo de proyecto y sumar los flujos de efectivo para cada uno, usando valores absolutos
-    proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["cash_flow"].sum().abs()
+    proj_group_cashflow_abs = filtered_merged.groupby("proj_group")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     proj_group_cashflow_abs = proj_group_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -368,7 +368,7 @@ elif menu == "Proyectos rentables":
 
     st.write("---") 
     # Agrupar los datos por cliente y sumar los flujos de efectivo para cada uno, usando valores absolutos
-    client_cashflow_abs = filtered_merged.groupby("client_name")["cash_flow"].sum().abs()
+    client_cashflow_abs = filtered_merged.groupby("client_name")["project_cash_flow"].sum().abs()
     # Ordenar los valores de mayor a menor
     client_cashflow_abs = client_cashflow_abs.sort_values(ascending=False)
     # Paleta de colores que coincida aproximadamente con Streamlit
@@ -411,7 +411,7 @@ elif menu == "Oportunidades":
 
 
     # Eliminar columnas no deseadas y asignar variables independientes y dependiente
-    X = merged_no_nulls.drop(['cash_flow','longitude', 'latitude', 'total_outcome', 'total_income', 
+    X = merged_no_nulls.drop(['project_cash_flow','longitude', 'latitude', 'total_outcome', 'total_income', 
                             'sum_qty', 'num_negative_transactions', 'num_bilateral_transactions', 
                             'num_neutral_transactions', 'num_outcome_transactions', 
                             'num_income_transactions', 'num_transactions', 'num_sub_projects', 
