@@ -74,13 +74,16 @@ if menu == "Home":
     selected_proj_group = st.sidebar.multiselect('Select Project Group:', merged['proj_group'].unique(), default=merged['proj_group'].unique())
     selected_company = st.sidebar.multiselect('Select Company:', merged['company'].unique(), default=merged['company'].unique())
     selected_client_name = st.sidebar.multiselect('Select Client Name:', merged['client_name'].unique(), default=merged['client_name'].unique())
+    selected_project_category = st.sidebar.multiselect('Select Project Category:', merged['CATEGORYID'].unique(), default=merged['CATEGORYID'].unique())
+
 
     # Filter the merged dataframe based on selected values
     filtered_merged = merged[
         (merged['state'].isin(selected_states)) &
         (merged['proj_group'].isin(selected_proj_group)) &
         (merged['company'].isin(selected_company)) &
-        (merged['client_name'].isin(selected_client_name))
+        (merged['client_name'].isin(selected_client_name)) &
+        (merged['CATEGORYID'].isin(selected_project_category))
     ]
 
     # Create a map showing the profitable and non-profitable projects
@@ -142,10 +145,12 @@ if menu == "Home":
 elif menu == "Proyectos NO rentables":
     st.header("Identificar y Analizar Fuentes Generadoras de Costos en la Empresa")
     # State filter on sidebar
-    selected_states = st.sidebar.multiselect('Select States:', merged['state'].unique(), default=merged['state'].unique() )
+    selected_states = st.sidebar.multiselect('Select States:', merged['state'].unique(), default=merged['state'].unique())
     selected_proj_group = st.sidebar.multiselect('Select Project Group:', merged['proj_group'].unique(), default=merged['proj_group'].unique())
     selected_company = st.sidebar.multiselect('Select Company:', merged['company'].unique(), default=merged['company'].unique())
     selected_client_name = st.sidebar.multiselect('Select Client Name:', merged['client_name'].unique(), default=merged['client_name'].unique())
+    selected_project_category = st.sidebar.multiselect('Select Project Category:', merged['CATEGORYID'].unique(), default=merged['CATEGORYID'].unique())
+
 
     # Filter the merged dataframe based on selected values
     filtered_merged = merged[
@@ -153,6 +158,7 @@ elif menu == "Proyectos NO rentables":
         (merged['proj_group'].isin(selected_proj_group)) &
         (merged['company'].isin(selected_company)) &
         (merged['client_name'].isin(selected_client_name)) &
+        (merged['CATEGORYID'].isin(selected_project_category)) &
         (merged['profitable_project'] == 'no')
     ]
 
@@ -253,6 +259,27 @@ elif menu == "Proyectos NO rentables":
 
 
 
+    st.write("---") 
+    category_cashflow_abs = filtered_merged.groupby("CATEGORYID")["project_cash_flow"].sum().abs()
+    # Ordenar los valores de mayor a menor
+    category_cashflow_abs = category_cashflow_abs.sort_values(ascending=False)
+    # Paleta de colores que coincida aproximadamente con Streamlit
+    streamlit_palette = ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"]
+    # Crear un diagrama de pastel
+    fig, ax = plt.subplots()
+    ax.pie(category_cashflow_abs, labels=category_cashflow_abs.index, autopct='%1.1f%%', startangle=90, colors=streamlit_palette)
+    # Dibujar un círculo en el centro para hacerlo un donut chart
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    fig.gca().add_artist(centre_circle)
+    # Asegurarse de que el gráfico se muestra como un círculo y no como una elipse
+    ax.axis('equal')
+    # Título del gráfico
+    plt.title('Participación en Cashflow por Categoría de Proyecto (Valores Absolutos)')
+    # Mostrar el gráfico en Streamlit
+    st.pyplot(fig)
+
+
+
 
     # Create a map showing the profitable and non-profitable projects
     fig = px.scatter_mapbox(
@@ -277,10 +304,12 @@ elif menu == "Proyectos NO rentables":
 elif menu == "Proyectos rentables":
     st.header("Identificar y Analizar Fuentes Generadoras de Beneficio en la Empresa")
     # State filter on sidebar
-    selected_states = st.sidebar.multiselect('Select States:', merged['state'].unique(), default=merged['state'].unique() )
+    selected_states = st.sidebar.multiselect('Select States:', merged['state'].unique(), default=merged['state'].unique())
     selected_proj_group = st.sidebar.multiselect('Select Project Group:', merged['proj_group'].unique(), default=merged['proj_group'].unique())
     selected_company = st.sidebar.multiselect('Select Company:', merged['company'].unique(), default=merged['company'].unique())
     selected_client_name = st.sidebar.multiselect('Select Client Name:', merged['client_name'].unique(), default=merged['client_name'].unique())
+    selected_project_category = st.sidebar.multiselect('Select Project Category:', merged['CATEGORYID'].unique(), default=merged['CATEGORYID'].unique())
+
 
     # Filter the merged dataframe based on selected values
     filtered_merged = merged[
@@ -288,6 +317,7 @@ elif menu == "Proyectos rentables":
         (merged['proj_group'].isin(selected_proj_group)) &
         (merged['company'].isin(selected_company)) &
         (merged['client_name'].isin(selected_client_name)) &
+        (merged['CATEGORYID'].isin(selected_project_category)) &
         (merged['profitable_project'] == 'yes')
     ]
 
@@ -387,6 +417,27 @@ elif menu == "Proyectos rentables":
     st.pyplot(fig)
 
 
+
+    st.write("---") 
+    category_cashflow_abs = filtered_merged.groupby("CATEGORYID")["project_cash_flow"].sum().abs()
+    # Ordenar los valores de mayor a menor
+    category_cashflow_abs = category_cashflow_abs.sort_values(ascending=False)
+    # Paleta de colores que coincida aproximadamente con Streamlit
+    streamlit_palette = ["#1F77B4", "#FF7F0E", "#2CA02C", "#D62728", "#9467BD", "#8C564B", "#E377C2", "#7F7F7F", "#BCBD22", "#17BECF"]
+    # Crear un diagrama de pastel
+    fig, ax = plt.subplots()
+    ax.pie(category_cashflow_abs, labels=category_cashflow_abs.index, autopct='%1.1f%%', startangle=90, colors=streamlit_palette)
+    # Dibujar un círculo en el centro para hacerlo un donut chart
+    centre_circle = plt.Circle((0,0),0.70,fc='white')
+    fig.gca().add_artist(centre_circle)
+    # Asegurarse de que el gráfico se muestra como un círculo y no como una elipse
+    ax.axis('equal')
+    # Título del gráfico
+    plt.title('Participación en Cashflow por Categoría de Proyecto')
+    # Mostrar el gráfico en Streamlit
+    st.pyplot(fig)
+
+
     # Create a map showing the profitable and non-profitable projects
     fig = px.scatter_mapbox(
         filtered_merged,
@@ -416,7 +467,7 @@ elif menu == "Oportunidades":
                             'num_neutral_transactions', 'num_outcome_transactions', 
                             'num_income_transactions', 'num_transactions', 'num_sub_projects', 
                             'country', 'client_code' , 'city_name', 'city_code', 'company', 
-                            'project_name', 'profitable_project', 'id', 'project_creation_date'], axis=1)
+                            'project_name', 'profitable_project', 'CATEGORYID', 'id', 'project_creation_date'], axis=1)
     y = merged_no_nulls['profitable_project']
 
     # Aplicar get_dummies para convertir variables categóricas en dummy/indicator variables
