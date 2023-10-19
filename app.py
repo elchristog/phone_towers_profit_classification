@@ -43,6 +43,15 @@ def get_bar_chart_data_by_client_name(df):
     return counts, percentages
 
 
+def get_bar_chart_data_by_category_id(df):
+    # Group by both 'CATEGORYID' and 'profitable_project'
+    grouped_df = df.groupby(['CATEGORYID', 'profitable_project'])
+    # Get counts for each combination of 'CATEGORYID' and 'profitable_project'
+    counts = grouped_df.size().unstack(fill_value=0)
+    # Calculate the percentages for profitable and non-profitable projects for each CATEGORYID
+    percentages = counts.divide(counts.sum(axis=1), axis=0) * 100
+    return counts, percentages
+
 
 
 # Read the projects and cities dataframes
@@ -136,6 +145,15 @@ if menu == "Home":
         barmode='group',
         title="# Proyectos Rentables y NO Rentables por Cliente",
         color_discrete_map={'yes': 'rgb(46,199,192)', 'no': 'rgb(242,75,75)'})
+    st.plotly_chart(fig_bar)
+
+
+    counts, percentages = get_bar_chart_data_by_category_id(filtered_merged)
+    fig_bar = px.bar(counts.reset_index(), x='CATEGORYID', y=['yes', 'no'],
+                            barmode='group',
+                            labels={'value': 'Number of Projects', 'variable': 'Profitable Project', 'CATEGORYID': 'CATEGORYID'},
+                            title="# Proyectos Rentables y NO Rentables por Categoría",
+                            color_discrete_map={'yes': 'rgb(46,199,192)', 'no': 'rgb(242,75,75)'})
     st.plotly_chart(fig_bar)
 
 
